@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discussion forums</title>
+
+  <link href="./common.css" rel="stylesheet" type='text/css'>
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" type='text/css'>
+
+<style>
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  width: 150px;
+  cursor: pointer;
+}
+
+.button1 {border-radius: 2px;}
+.button2 {border-radius: 4px;}
+.button3 {border-radius: 8px;}
+.button4 {border-radius: 12px;}
+.button5 {border-radius: 50%;}
+</style>
+
+</head>
+<body>
+  <div class="js-sidecar-status">... waiting for Sidecar</div>
+  <table>
+    <tr>
+      <td><img src="gitter-brands.svg" height="80" width="80"></td>
+      <td><button id="buttonProceed" class="button button1">Proceed</button></td>
+      <td><button id="buttonEnd" class="button button1">End</button></td>
+    </tr>
+  </table>
+
+  <script>
+    ((window.gitter = {}).chat = {}).options = {
+      disableDefaultChat: true
+    };
+  </script>
+  <script src="./sidecar.v1.js" async defer></script>
+
+  <script>
+    document.addEventListener('gitter-sidecar-ready', function(e) {
+      var GitterChat = e.detail.Chat;
+      document.querySelector('.js-sidecar-status').innerHTML = 'Discussion forum is hosted on Gitter. Please do not leave any private information';
+
+      var chat;
+      document.getElementById('buttonProceed').addEventListener('click', function(e) {
+        console.log('Create');
+        roomName = 'onstituter/community';
+        roomName = getParameterByName('foo'); //// query string: ?foo=lorem&bar=&baz
+        console.log(roomName);
+        chat = new GitterChat({
+          room: roomName
+        });
+      });
+
+      document.getElementById('buttonEnd').addEventListener('click', function(e) {
+        console.log('Destroy');
+        chat.destroy();
+      });
+    });
+
+
+//////////////////////
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+//////////////////////
+  </script>
+</body>
+</html>
+
